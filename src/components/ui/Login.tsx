@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Icons } from "./Icons";
 import Link from "next/link";
+import UserAuthForm from "./UserAuthForm";
 
 const Login = () => {
   return (
@@ -14,6 +15,8 @@ const Login = () => {
         </p>
 
         {/*signin form */}
+        <UserAuthForm />
+
         <p className="px-8 text-center text-sm text-zinc-700">
           New to PulsePoint?{" "}
           <Link
