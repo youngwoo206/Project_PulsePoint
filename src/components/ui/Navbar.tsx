@@ -16,7 +16,7 @@ const Navbar = async () => {
 
         {/* searchbar */}
 
-        <Link href="/sign-in" className={buttonVariants()}>
+        <Link href="/login" className={buttonVariants()}>
           Sign In
         </Link>
       </div>
