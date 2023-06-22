@@ -2,7 +2,7 @@ import { FC } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
 import Link from "next/link";
-import Login from "@/components/ui/Login";
+import Signup from "@/components/ui/Login";
 import { ChevronLeft } from "lucide-react";
 
 const page: FC = ({}) => {
@@ -18,7 +18,7 @@ const page: FC = ({}) => {
           <ChevronLeft className="mr-2 h-4 w-4" />
           <p className="">Home</p>
         </Link>
-        <Login />
+        <Signup />
       </div>
     </div>
   );
