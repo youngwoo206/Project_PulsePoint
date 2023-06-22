@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/ui/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
+import Providers from "@/components/ui/Providers";
 
 export const metadata = {
   title: "PulsePoint",
@@ -27,13 +28,15 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen pt-12 bg-slate-50 antialiased">
-        {/* @ts-expect-error Server Component */}
-        <Navbar />
-        {authModal}
-        <div className="container max-w-7xl mx-auto h-full pt-12">
-          {children}
-        </div>
-        <Toaster />
+        <Providers>
+          {/* @ts-expect-error Server Component */}
+          <Navbar />
+          {authModal}
+          <div className="container max-w-7xl mx-auto h-full pt-12">
+            {children}
+          </div>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
