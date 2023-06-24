@@ -86,8 +86,8 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  subreddit   Subreddit @relation(fields: [subredditID], references: [id])
-  subredditID String
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
+  subredditId String
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
