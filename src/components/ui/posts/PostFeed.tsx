@@ -59,13 +59,21 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
           //if post is last in viewport, add ref to post
           return (
             <li key={post.id} ref={ref}>
-              <Post />
+              <Post
+                subredditName={post.subreddit.name}
+                post={post}
+                commentAmt={post.comments.length}
+              />
             </li>
           );
         } else {
           return (
             <li key={post.id}>
-              <Post />
+              <Post
+                subredditName={post.subreddit.name}
+                post={post}
+                commentAmt={post.comments.length}
+              />
             </li>
           );
         }
