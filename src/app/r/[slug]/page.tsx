@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { notFound } from "next/navigation";
 import MiniCreatePost from "@/components/ui/subreddit/MiniCreatePost";
+import PostFeed from "@/components/ui/posts/PostFeed";
 
 interface PageProps {
   params: {
@@ -41,7 +42,7 @@ const Page = async ({ params }: PageProps) => {
         r/{subreddit.name}
       </h1>
       <MiniCreatePost session={session} />
-      {/* todo: show posts in feed */}
+      <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} />
     </>
   );
 };
