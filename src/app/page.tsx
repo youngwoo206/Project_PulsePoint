@@ -1,13 +1,20 @@
 import { buttonVariants } from "@/components/ui/Button";
+import CustomFeed from "@/components/ui/feeds/CustomFeed";
+import GeneralFeed from "@/components/ui/feeds/GeneralFeed";
+import { getAuthSession } from "@/lib/auth";
 import { HomeIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getAuthSession();
+
   return (
     <>
       <h1 className="font-bold text-3xl md:text-4xl">Your Feed</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
-        {/*feed*/}
+        {/* todo: add categories or tags to posts for general feed filter? */}
+        {/*@ts-expect-error*/}
+        {session ? <CustomFeed /> : <GeneralFeed />}
 
         {/*subreddit info */}
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
