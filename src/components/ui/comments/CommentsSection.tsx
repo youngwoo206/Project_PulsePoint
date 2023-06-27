@@ -72,7 +72,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
                     0
                   );
 
-                  const replyVote = topLevelComment.votes.find(
+                  const replyVote = reply.votes.find(
                     (vote) => vote.userId === session?.user.id
                   );
 

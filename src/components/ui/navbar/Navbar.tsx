@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { Icons } from "./Icons";
-import { buttonVariants } from "./Button";
+import { Icons } from "../Icons";
+import { buttonVariants } from "../Button";
 import { getAuthSession } from "@/lib/auth";
-import UserAccountNav from "./UserAccountNav";
+import UserAccountNav from "../UserAccountNav";
+import Searchbar from "./Searchbar";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -18,7 +19,7 @@ const Navbar = async () => {
           </p>
         </Link>
 
-        {/* searchbar */}
+        <Searchbar />
 
         {session?.user ? (
           <UserAccountNav user={session.user} />

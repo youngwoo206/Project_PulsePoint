@@ -61,7 +61,7 @@ export async function PATCH(req: Request) {
                 commentId
             }
         })
-
+        return new Response('Vote Registered')
     } 
         catch (error) {
             if (error instanceof z.ZodError) {
