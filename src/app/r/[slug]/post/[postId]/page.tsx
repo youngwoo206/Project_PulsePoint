@@ -43,33 +43,40 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div>
-      <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between">
-        <Suspense fallback={<PostVoteShell />}>
-          {/*@ts-expect-error*/}
-          <PostVoteServer
-            postId={post?.id ?? cachedPost.id}
-            getData={async () => {
-              return await db.post.findUnique({
-                where: {
-                  id: params.postId,
-                },
-                include: {
-                  votes: true,
-                },
-              });
-            }}
-          />
-        </Suspense>
-        <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm">
-          <p className="max-h-4 mt-1 truncate text-xs text-gray-500">
-            Posted by u/{post?.author.username ?? cachedPost.authorUsername}{" "}
-            {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
-          </p>
-          <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
-            {post?.title ?? cachedPost.title}
-          </h1>
-          <EditorOutput content={post?.content ?? cachedPost.content} />
-
+      <div className="rounded-md bg-white shadow">
+        <div className="px-6 py-4 flex justify-between">
+          <Suspense fallback={<PostVoteShell />}>
+            {/*@ts-expect-error*/}
+            <PostVoteServer
+              postId={post?.id ?? cachedPost.id}
+              getData={async () => {
+                return await db.post.findUnique({
+                  where: {
+                    id: params.postId,
+                  },
+                  include: {
+                    votes: true,
+                  },
+                });
+              }}
+            />
+          </Suspense>
+          <div className="w-0 flex-1">
+            <div className="max-h-40 mt-1 text-xs text-gray-500">
+              <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
+                Posted by {post?.author.username ?? cachedPost.authorUsername}{" "}
+                {formatTimeToNow(
+                  new Date(post?.createdAt ?? cachedPost.createdAt)
+                )}
+              </p>
+              <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
+                {post?.title ?? cachedPost.title}
+              </h1>
+              <EditorOutput content={post?.content ?? cachedPost.content} />
+            </div>
+          </div>
+        </div>
+        <div className="px-6 py-4">
           <Suspense
             fallback={
               <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />

@@ -1,5 +1,4 @@
 import { getAuthSession } from "@/lib/auth";
-import { FC } from "react";
 import { db } from "@/lib/db";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { notFound } from "next/navigation";
