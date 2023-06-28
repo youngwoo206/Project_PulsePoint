@@ -1,4 +1,5 @@
 import { buttonVariants } from "@/components/ui/Button";
+import ToFeedButton from "@/components/ui/ToFeedButton";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -55,9 +56,11 @@ const Layout = async ({
   return (
     <div className="sm:container max-w-7xl mx-auto h-full pt-12">
       <div>
-        {/* todo: button to take us back */}
+        <ToFeedButton />
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
-          <div className="flex flex-col col-span-2 space-y-6">{children}</div>
+          <ul className="flex flex-col col-span-2 space-y-6">{children}</ul>
+
           {/* subreddit info */}
           <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
             <div className="px-6 py-4">
