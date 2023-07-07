@@ -57,6 +57,7 @@ module.exports = {
         navy: "#293462",
         lightBlue: "#D2E9E9",
         lighterBlue: "#E3F4F4",
+        pink: "#FCC8D1",
       },
       borderRadius: {
         lg: `var(--radius)`,
