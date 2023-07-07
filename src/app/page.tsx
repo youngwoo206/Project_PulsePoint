@@ -3,21 +3,36 @@ import CustomFeed from "@/components/ui/feeds/CustomFeed";
 import GeneralFeed from "@/components/ui/feeds/GeneralFeed";
 import { getAuthSession } from "@/lib/auth";
 import { HomeIcon } from "lucide-react";
+import { db } from "@/lib/db";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 export default async function Home() {
-  const session = await getAuthSession();
+  async function feed() {
+    const session = await getAuthSession();
+    const followedCommunities = await db.subscription.count({
+      where: {
+        userId: session?.user.id,
+      },
+    });
+
+    if (session && followedCommunities) {
+      /*@ts-expect-error*/
+      return <CustomFeed />;
+    } else {
+      /*@ts-expect-error*/
+      return <GeneralFeed />;
+    }
+  }
 
   return (
     <div className="pt-12">
       <h1 className="font-bold text-3xl md:text-4xl">Your Feed</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
         {/* todo: add categories or tags to posts for general feed filter? */}
-        {/*@ts-expect-error*/}
-        {session ? <CustomFeed /> : <GeneralFeed />}
+        {feed()}
 
         {/*subreddit info */}
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
@@ -42,6 +57,13 @@ export default async function Home() {
               Create Community
             </Link>
           </div>
+        </div>
+        {/*Recommended Communities */}
+        <div className="bg-emerald-100 px-6 py-4">
+          <p className="font-semibold py-3 flex items-center gap-1.5">
+            <HomeIcon className="w-4 h-4" />
+            Home
+          </p>
         </div>
       </div>
     </div>
