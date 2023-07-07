@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
+import UserAvatar from "@/components/ui/UserAvatar";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -53,10 +54,14 @@ const Layout = async ({
     },
   });
 
-  const memberIdArr = await db.subscription.findMany({
-    where: {
-      subreddit: {
-        name: slug,
+  const memberArr = await db.user.findMany({
+    include: {
+      Subscription: {
+        where: {
+          subreddit: {
+            name: slug,
+          },
+        },
       },
     },
   });
@@ -125,9 +130,9 @@ const Layout = async ({
               </div>
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
                 <div>
-                  {/*@ts-ignore */}
-                  {memberIdArr.map((user) => {
-                    return <p key={user.userId}>{user.userId}</p>;
+                  {/* @ts-ignore */}
+                  {memberArr.map((user) => {
+                    return <p key={user.id}>{user.username}</p>;
                   })}
                 </div>
               </dl>
