@@ -27,7 +27,7 @@ export default function RootLayout({
         font.className
       )}
     >
-      <body className="min-h-screen pt-12 bg-slate-50 antialiased">
+      <body className="min-h-screen pt-12 bg-lightGrey antialiased">
         <Providers>
           {/* @ts-expect-error Server Component */}
           <Navbar />
