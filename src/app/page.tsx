@@ -2,7 +2,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import CustomFeed from "@/components/ui/feeds/CustomFeed";
 import GeneralFeed from "@/components/ui/feeds/GeneralFeed";
 import { getAuthSession } from "@/lib/auth";
-import { HomeIcon } from "lucide-react";
+import { Flame, HomeIcon, LucideUser } from "lucide-react";
 import { db } from "@/lib/db";
 import Link from "next/link";
 
@@ -27,6 +27,20 @@ export default async function Home() {
     }
   }
 
+  const topCommunities = await db.subreddit.findMany({
+    take: 3,
+    orderBy: {
+      subscribers: {
+        _count: "desc",
+      },
+    },
+    include: {
+      _count: {
+        select: { subscribers: true },
+      },
+    },
+  });
+
   return (
     <div className="pt-12">
       <h1 className="font-bold text-3xl md:text-4xl">Your Feed</h1>
@@ -35,15 +49,15 @@ export default async function Home() {
         {feed()}
         <div className="overflow-hidden h-fit  order-first md:order-last">
           {/*subreddit info */}
-          <div className="rounded-lg border border-gray-200">
-            <div className="bg-emerald-100 px-6 py-4">
+          <div className="rounded-lg border border-gray-200 bg-white">
+            <div className="bg-emerald-100 px-6 py-4 rounded-lg">
               <p className="font-semibold py-3 flex items-center gap-1.5">
                 <HomeIcon className="w-4 h-4" />
                 Home
               </p>
             </div>
 
-            <div className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+            <div className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6 ">
               <div className="flex justify-between gap-x-4 py-3">
                 <p className="text-zinc-500">
                   Your personal PulsePoint homepage. Come here to check in with
@@ -59,9 +73,10 @@ export default async function Home() {
             </div>
           </div>
           {/*Recommended Communities */}
-          <div className="rounded-lg border border-gray-200 mt-6">
-            <div className="bg-pink px-6 py-4">
+          <div className="rounded-lg border border-gray-200 mt-6 bg-white">
+            <div className="bg-pink px-6 py-4 rounded-lg">
               <p className="font-semibold py-3 flex items-center gap-1.5">
+                <Flame className="w-4 h-4" />
                 Top Communities
               </p>
             </div>
@@ -71,6 +86,25 @@ export default async function Home() {
                   Find the hottest new communities here!
                 </p>
               </div>
+            </div>
+            <div className="mb-6">
+              {topCommunities.map((subreddit) => {
+                return (
+                  <a
+                    href={`r/${subreddit.name}`}
+                    key={subreddit.id}
+                    className="border border-gray-200 rounded-lg mx-4 my-2 flex justify-between items-center hover:bg-gray-50"
+                  >
+                    <p className="text-zinc-500 text-sm pl-4 py-1">
+                      r/{subreddit.name}
+                    </p>
+                    <p className="text-zinc-500 text-sm pr-3 flex">
+                      <LucideUser className="h-4 w-4 mx-2" />
+                      {subreddit._count.subscribers}
+                    </p>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
