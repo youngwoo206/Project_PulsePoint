@@ -1,9 +1,11 @@
 import { FC, ReactNode, useRef } from "react";
 import { Post, User, Vote } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
-import { MessageSquare } from "lucide-react";
+import { LucideTrash, MessageSquare } from "lucide-react";
 import EditorOutput from "./EditorOutput";
 import PostVoteClient from "./voting/PostVoteClient";
+import { Session } from "next-auth";
+import { Button } from "../Button";
 
 type PartialVote = Pick<Vote, "type">;
 
@@ -16,6 +18,7 @@ interface PostProps {
   };
   votesAmt: number;
   currentVote?: PartialVote;
+  session?: Session | null;
 }
 
 const Post: FC<PostProps> = ({
@@ -24,6 +27,7 @@ const Post: FC<PostProps> = ({
   commentAmt,
   votesAmt: votesAmt,
   currentVote,
+  session,
 }) => {
   const postRef = useRef<HTMLDivElement>(null);
 
@@ -72,7 +76,7 @@ const Post: FC<PostProps> = ({
         </div>
       </div>
 
-      <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
+      <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6 flex justify-between">
         <a
           href={`/r/${subredditName}/post/${post.id}`}
           className="w-fit flex items-center gap-2"
@@ -80,6 +84,11 @@ const Post: FC<PostProps> = ({
           <MessageSquare className="h-4 w-4" />
           {commentAmt} comments
         </a>
+        {post.authorId === session?.user.id ? (
+          <Button size="sm" variant="subtle">
+            <LucideTrash className="w-4 h-4" />
+          </Button>
+        ) : null}
       </div>
     </div>
   );
