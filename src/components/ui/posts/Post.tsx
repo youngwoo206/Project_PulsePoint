@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode, useRef, useState } from "react";
 import { Post, User, Vote } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
 import { LucideTrash, MessageSquare } from "lucide-react";
@@ -6,6 +6,7 @@ import EditorOutput from "./EditorOutput";
 import PostVoteClient from "./voting/PostVoteClient";
 import { Session } from "next-auth";
 import { Button } from "../Button";
+import DeletePostModal from "./DeletePostModal";
 
 type PartialVote = Pick<Vote, "type">;
 
@@ -30,6 +31,8 @@ const Post: FC<PostProps> = ({
   session,
 }) => {
   const postRef = useRef<HTMLDivElement>(null);
+
+  const [modal, setModal] = useState(false);
 
   return (
     <div className="rounded-md bg-white shadow">
@@ -85,11 +88,18 @@ const Post: FC<PostProps> = ({
           {commentAmt} comments
         </a>
         {post.authorId === session?.user.id ? (
-          <Button size="sm" variant="subtle">
+          <Button
+            size="sm"
+            variant="subtle"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
             <LucideTrash className="w-4 h-4" />
           </Button>
         ) : null}
       </div>
+      {modal ? <DeletePostModal modal={modal} setModal={setModal} /> : null}
     </div>
   );
 };
