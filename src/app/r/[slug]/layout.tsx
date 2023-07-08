@@ -124,19 +124,19 @@ const Layout = async ({
               </dl>
             </div>
             {/* see subreddit members */}
-            <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last mt-9">
+            {/* <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last mt-9">
               <div className="px-6 py-4">
                 <p className="font-semibold py-3">r/{subreddit.name} Members</p>
               </div>
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
-                <div>
-                  {/* @ts-ignore */}
-                  {memberArr.map((user) => {
+                <div> */}
+            {/* @ts-ignore */}
+            {/* {memberArr.map((user) => {
                     return <p key={user.id}>{user.username}</p>;
                   })}
                 </div>
               </dl>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
