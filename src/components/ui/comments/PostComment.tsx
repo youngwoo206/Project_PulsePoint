@@ -1,6 +1,6 @@
 "use client";
 import { FC, useRef, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../navbar/UserAvatar";
 import { Comment, CommentVote, User } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
 import CommentVotes from "./CommentVotes";

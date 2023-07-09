@@ -8,12 +8,16 @@ import {
 } from "../DropdownMenu";
 import { User } from "next-auth";
 import { FC } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "./UserAvatar";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
+interface ExtendedUser extends User {
+  username?: string | null;
+}
+
 interface UserAccountNavProps {
-  user: Pick<User, "name" | "image" | "email">;
+  user: ExtendedUser;
 }
 
 const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
@@ -28,7 +32,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
               image: user.image || null,
             }}
           />
-          <p className="text-sm pl-2 text-zinc-600 align-middle">{user.name}</p>
+          <p className="text-sm pl-2 text-zinc-600 my-auto">{user.username}</p>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white" align="end">

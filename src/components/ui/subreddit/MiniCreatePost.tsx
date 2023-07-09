@@ -2,7 +2,7 @@
 import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../navbar/UserAvatar";
 import { Input } from "../Input";
 import { Button } from "../Button";
 import { ImageIcon, Link2 } from "lucide-react";
