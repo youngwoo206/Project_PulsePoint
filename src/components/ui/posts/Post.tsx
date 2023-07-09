@@ -1,3 +1,4 @@
+"use client";
 import { FC, ReactNode, useRef, useState } from "react";
 import { Post, User, Vote } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
@@ -7,6 +8,12 @@ import PostVoteClient from "./voting/PostVoteClient";
 import { Session } from "next-auth";
 import { Button } from "../Button";
 import DeletePostModal from "./DeletePostModal";
+import { useMutation } from "@tanstack/react-query";
+import { PostDeletionRequest } from "@/lib/validators/post";
+import axios, { AxiosError } from "axios";
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { useRouter } from "next/navigation";
 
 type PartialVote = Pick<Vote, "type">;
 
@@ -32,7 +39,36 @@ const Post: FC<PostProps> = ({
 }) => {
   const postRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+  const { loginToast } = useCustomToast();
   const [modal, setModal] = useState(false);
+  const { mutate: deletePost, isLoading } = useMutation({
+    mutationFn: async () => {
+      const payload: PostDeletionRequest = {
+        id: post.id,
+      };
+
+      const { data } = await axios.post("/api/subreddit/post/delete", payload);
+      return data as string;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      toast({
+        title: "There was an error",
+        description: "Could not delete post.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Post successfully deleted",
+      });
+    },
+  });
 
   return (
     <div className="rounded-md bg-white shadow">
@@ -99,7 +135,13 @@ const Post: FC<PostProps> = ({
           </Button>
         ) : null}
       </div>
-      {modal ? <DeletePostModal setModal={setModal} /> : null}
+      {modal ? (
+        <DeletePostModal
+          setModal={setModal}
+          deletePost={deletePost}
+          router={router}
+        />
+      ) : null}
     </div>
   );
 };

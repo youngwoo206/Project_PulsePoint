@@ -1,12 +1,25 @@
 import { FC } from "react";
 import { Button } from "../Button";
 import { X } from "lucide-react";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 interface DeletePostModalProps {
   setModal: Function;
+  deletePost: Function;
+  router: AppRouterInstance;
 }
 
-const DeletePostModal: FC<DeletePostModalProps> = ({ setModal }) => {
+const DeletePostModal: FC<DeletePostModalProps> = ({
+  setModal,
+  deletePost,
+  router,
+}) => {
+  const onDelete = () => {
+    deletePost();
+    setModal(false);
+    router.refresh();
+  };
+
   return (
     <div className="fixed inset-0 bg-zinc-900/20 z-10">
       <div className="container flex items-center h-full max-w-lg mx-auto">
@@ -34,7 +47,7 @@ const DeletePostModal: FC<DeletePostModalProps> = ({ setModal }) => {
               >
                 Cancel
               </Button>
-              <Button>Delete</Button>
+              <Button onClick={() => onDelete()}>Delete</Button>
             </div>
           </div>
         </div>
