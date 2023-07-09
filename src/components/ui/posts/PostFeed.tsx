@@ -7,13 +7,19 @@ import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Post from "./Post";
+import { Session } from "next-auth";
 
 interface PostFeedProps {
   initialPosts: ExtendedPost[];
   subredditName?: string;
+  session?: Session | null;
 }
 
-const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
+const PostFeed: FC<PostFeedProps> = ({
+  initialPosts,
+  subredditName,
+  session,
+}) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -21,7 +27,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
     threshold: 1,
   });
 
-  const { data: session } = useSession();
+  const { data: sesion } = useSession();
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ["infinite-query"],
@@ -60,7 +66,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
         }, 0);
 
         const currentVote = post.votes.find(
-          (vote) => vote.userId === session?.user.id
+          (vote) => vote.userId === sesion?.user.id
         );
 
         if (index == posts.length - 1) {
@@ -73,6 +79,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
                 commentAmt={post.comments.length}
                 currentVote={currentVote}
                 votesAmt={votesAmt}
+                session={session}
               />
             </li>
           );
@@ -85,6 +92,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
               commentAmt={post.comments.length}
               currentVote={currentVote}
               votesAmt={votesAmt}
+              session={session}
             />
           );
         }

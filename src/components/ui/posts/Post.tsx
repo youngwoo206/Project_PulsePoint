@@ -1,9 +1,19 @@
-import { FC, ReactNode, useRef } from "react";
+"use client";
+import { FC, ReactNode, useRef, useState } from "react";
 import { Post, User, Vote } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
-import { MessageSquare } from "lucide-react";
+import { LucideTrash, MessageSquare } from "lucide-react";
 import EditorOutput from "./EditorOutput";
 import PostVoteClient from "./voting/PostVoteClient";
+import { Session } from "next-auth";
+import { Button } from "../Button";
+import DeletePostModal from "./DeletePostModal";
+import { useMutation } from "@tanstack/react-query";
+import { PostDeletionRequest } from "@/lib/validators/post";
+import axios, { AxiosError } from "axios";
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { useRouter } from "next/navigation";
 
 type PartialVote = Pick<Vote, "type">;
 
@@ -16,6 +26,7 @@ interface PostProps {
   };
   votesAmt: number;
   currentVote?: PartialVote;
+  session?: Session | null;
 }
 
 const Post: FC<PostProps> = ({
@@ -24,8 +35,40 @@ const Post: FC<PostProps> = ({
   commentAmt,
   votesAmt: votesAmt,
   currentVote,
+  session,
 }) => {
   const postRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+  const { loginToast } = useCustomToast();
+  const [modal, setModal] = useState(false);
+  const { mutate: deletePost, isLoading } = useMutation({
+    mutationFn: async () => {
+      const payload: PostDeletionRequest = {
+        id: post.id,
+      };
+
+      const { data } = await axios.post("/api/subreddit/post/delete", payload);
+      return data as string;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      toast({
+        title: "There was an error",
+        description: "Could not delete post.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Post successfully deleted",
+      });
+    },
+  });
 
   return (
     <div className="rounded-md bg-white shadow">
@@ -72,7 +115,7 @@ const Post: FC<PostProps> = ({
         </div>
       </div>
 
-      <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
+      <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6 flex justify-between">
         <a
           href={`/r/${subredditName}/post/${post.id}`}
           className="w-fit flex items-center gap-2"
@@ -80,7 +123,25 @@ const Post: FC<PostProps> = ({
           <MessageSquare className="h-4 w-4" />
           {commentAmt} comments
         </a>
+        {post.authorId === session?.user.id ? (
+          <Button
+            size="sm"
+            variant="subtle"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            <LucideTrash className="w-4 h-4" />
+          </Button>
+        ) : null}
       </div>
+      {modal ? (
+        <DeletePostModal
+          setModal={setModal}
+          deletePost={deletePost}
+          router={router}
+        />
+      ) : null}
     </div>
   );
 };
