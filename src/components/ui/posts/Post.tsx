@@ -99,7 +99,7 @@ const Post: FC<PostProps> = ({
           </Button>
         ) : null}
       </div>
-      {modal ? <DeletePostModal modal={modal} setModal={setModal} /> : null}
+      {modal ? <DeletePostModal setModal={setModal} /> : null}
     </div>
   );
 };
