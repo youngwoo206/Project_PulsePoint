@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Icons } from "../Icons";
 import { buttonVariants } from "../Button";
 import { getAuthSession } from "@/lib/auth";
-import UserAccountNav from "../UserAccountNav";
+import UserAccountNav from "./UserAccountNav";
 import Searchbar from "./Searchbar";
 
 const Navbar = async () => {

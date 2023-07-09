@@ -5,10 +5,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./DropdownMenu";
+} from "../DropdownMenu";
 import { User } from "next-auth";
 import { FC } from "react";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "../UserAvatar";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -20,13 +20,16 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserAvatar
-          className="h-8 w-8"
-          user={{
-            name: user.name || null,
-            image: user.image || null,
-          }}
-        />
+        <div className="flex rounded-lg bg-zinc-200 px-2 py-1 border border-zinc-300">
+          <UserAvatar
+            className="h-8 w-8"
+            user={{
+              name: user.name || null,
+              image: user.image || null,
+            }}
+          />
+          <p className="text-sm pl-2 text-zinc-600 align-middle">{user.name}</p>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
