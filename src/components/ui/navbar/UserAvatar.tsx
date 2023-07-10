@@ -6,13 +6,13 @@ import { Icons } from "../Icons";
 import { AvatarProps } from "@radix-ui/react-avatar";
 
 interface UserAvatarProps extends AvatarProps {
-  user: Pick<User, "name" | "image">;
+  user: User | null;
 }
 
 const UserAvatar: FC<UserAvatarProps> = ({ user, ...props }) => {
   return (
     <Avatar {...props}>
-      {user.image ? (
+      {user?.image ? (
         <div className="relative aspect-square h-full w-full">
           <Image
             fill

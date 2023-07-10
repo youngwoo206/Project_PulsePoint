@@ -92,7 +92,15 @@ const Post: FC<PostProps> = ({
                 <span className="px-1">-</span>
               </>
             ) : null}
-            <span>Posted by {post.author.username}</span>
+            <span>
+              Posted by{" "}
+              <a
+                href={`/u/${post.author.username}`}
+                className="underline hover:text-zinc-500 text-black"
+              >
+                {post.author.username}
+              </a>
+            </span>
             {"  "}
             {formatTimeToNow(new Date(post.createdAt))}
           </div>

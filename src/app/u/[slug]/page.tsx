@@ -17,7 +17,7 @@ const UserPage = async ({ params }: UserPageProps) => {
     },
   });
 
-  return <div>{user?.username}</div>;
+  return <div className="max-w-4-xl mx-auto">{user?.username}</div>;
 };
 
 export default UserPage;

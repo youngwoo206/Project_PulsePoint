@@ -20,7 +20,7 @@ const Settings = async ({}) => {
         <h1 className="font-bold text-3xl md:text-4xl">Settings</h1>
       </div>
 
-      <div className="grid gap-10">
+      <div className="grid gap-10 mt-3">
         <UsernameForm
           user={{ id: session.user.id, username: session.user.username || "" }}
         />
