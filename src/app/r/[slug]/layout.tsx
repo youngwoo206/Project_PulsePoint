@@ -1,6 +1,5 @@
 import { buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
-import UserAvatar from "@/components/ui/navbar/UserAvatar";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";

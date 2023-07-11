@@ -27,11 +27,8 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
         <div className="flex rounded-lg bg-zinc-200 px-2 py-1 border border-zinc-300">
           <UserAvatar
             className="h-8 w-8"
-            user={{
-              id: user.id,
-              name: user.name || null,
-              image: user.image || null,
-            }}
+            name={user.name || null}
+            image={user.image || null}
           />
           <p className="text-sm pl-2 text-zinc-600 my-auto">{user.username}</p>
         </div>

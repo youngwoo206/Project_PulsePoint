@@ -55,7 +55,7 @@ const UserPage = async ({ params }: UserPageProps) => {
           <div className="rounded-lg border border-gray-200 bg-white">
             <div className="bg-pink px-6 py-4 rounded-lg flex justify-between">
               <div>
-                <UserAvatar user={user} />
+                <UserAvatar name={user?.name} image={user?.image} />
                 <p className="font-semibold py-3">u/{user?.username}</p>
               </div>
               {session?.user.id == user?.id ? (

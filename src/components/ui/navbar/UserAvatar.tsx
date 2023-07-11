@@ -6,24 +6,25 @@ import { Icons } from "../Icons";
 import { AvatarProps } from "@radix-ui/react-avatar";
 
 interface UserAvatarProps extends AvatarProps {
-  user: User | null;
+  name: string | null | undefined;
+  image: string | null | undefined;
 }
 
-const UserAvatar: FC<UserAvatarProps> = ({ user, ...props }) => {
+const UserAvatar: FC<UserAvatarProps> = ({ name, image, ...props }) => {
   return (
     <Avatar {...props}>
-      {user?.image ? (
+      {image ? (
         <div className="relative aspect-square h-full w-full">
           <Image
             fill
-            src={user.image}
+            src={image}
             alt="profile pic"
             referrerPolicy="no-referrer"
           />
         </div>
       ) : (
         <AvatarFallback>
-          <span className="sr-only">{user?.name}</span>
+          <span className="sr-only">{name}</span>
           <Icons.user className="h-4 w-4" />
         </AvatarFallback>
       )}

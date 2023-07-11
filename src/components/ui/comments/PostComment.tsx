@@ -70,11 +70,8 @@ const PostComment: FC<PostCommentProps> = ({
     <div className="flex flex-col">
       <div className="flex items-center">
         <UserAvatar
-          user={{
-            id: comment.authorId,
-            name: comment.author.name || null,
-            image: comment.author.image || null,
-          }}
+          name={comment.author.name || null}
+          image={comment.author.image || null}
           className="h-6 w-6"
         />
         <div className="ml-2 flex items-center gap-x-2">
