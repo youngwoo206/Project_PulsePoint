@@ -28,6 +28,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
           <UserAvatar
             className="h-8 w-8"
             user={{
+              id: user.id,
               name: user.name || null,
               image: user.image || null,
             }}

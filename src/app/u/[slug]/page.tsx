@@ -2,6 +2,8 @@ import UserFeed from "@/app/u/feed/UserFeed";
 import UserAvatar from "@/components/ui/navbar/UserAvatar";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { LucideSettings } from "lucide-react";
+import Link from "next/link";
 
 interface UserPageProps {
   params: {
@@ -19,6 +21,24 @@ const UserPage = async ({ params }: UserPageProps) => {
     },
   });
 
+  const postCount = await db.post.count({
+    where: {
+      authorId: user?.id,
+    },
+  });
+
+  const commentCount = await db.comment.count({
+    where: {
+      authorId: user?.id,
+    },
+  });
+
+  const subCount = await db.subscription.count({
+    where: {
+      userId: user?.id,
+    },
+  });
+
   return (
     <div className="pt-12">
       <h1 className="font-bold text-3xl md:text-4xl">{`${user?.username}'s posts`}</h1>
@@ -33,17 +53,26 @@ const UserPage = async ({ params }: UserPageProps) => {
         <div className="overflow-hidden h-fit  order-first md:order-last">
           {/*User info */}
           <div className="rounded-lg border border-gray-200 bg-white">
-            <div className="bg-emerald-100 px-6 py-4 rounded-lg">
-              <UserAvatar user={user} />
-              <p className="font-semibold py-3">u/{user?.username}</p>
-              {session?.user.id == user?.id ? <div>this is me</div> : null}
+            <div className="bg-pink px-6 py-4 rounded-lg flex justify-between">
+              <div>
+                <UserAvatar user={user} />
+                <p className="font-semibold py-3">u/{user?.username}</p>
+              </div>
+              {session?.user.id == user?.id ? (
+                <Link href={"/settings"}>
+                  <LucideSettings
+                    strokeWidth={1.5}
+                    className="w-5 h-5 hover:rotate-45 duration-300"
+                  />
+                </Link>
+              ) : null}
             </div>
             <div className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6 ">
+              <p className="text-zinc-500">Stats:</p>
               <div className="flex justify-between gap-x-4 py-3">
-                <p className="text-zinc-500">
-                  Your personal PulsePoint homepage. Come here to check in with
-                  your favorite communities
-                </p>
+                <p className="text-zinc-500">Posts: {postCount}</p>
+                <p className="text-zinc-500">Comments: {commentCount}</p>
+                <p className="text-zinc-500">Subscriptions: {subCount}</p>
               </div>
             </div>
           </div>
