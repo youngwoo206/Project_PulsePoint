@@ -64,7 +64,13 @@ const Page = async ({ params }: PageProps) => {
           <div className="w-0 flex-1">
             <div className="max-h-40 mt-1 text-xs text-gray-500">
               <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
-                Posted by {post?.author.username ?? cachedPost.authorUsername}{" "}
+                Posted by{" "}
+                <a
+                  href={`/u/${post?.author.username}`}
+                  className="underline hover:text-zinc-500 text-black"
+                >
+                  {post?.author.username}
+                </a>{" "}
                 {formatTimeToNow(
                   new Date(post?.createdAt ?? cachedPost.createdAt)
                 )}
