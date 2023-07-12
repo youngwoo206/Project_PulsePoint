@@ -42,6 +42,14 @@ export async function POST(req: Request) {
             }
         })
 
+        //gives creator moderation privileges
+        await db.moderation.create({
+            data: {
+                userId: session.user.id,
+                subredditId: subreddit.id
+            }
+        })
+
         return new Response(subreddit.name)
 
     } catch (error) {

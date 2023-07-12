@@ -75,6 +75,7 @@ const UserPostFeed: FC<PostFeedProps> = ({ initialPosts, user, session }) => {
                 currentVote={currentVote}
                 votesAmt={votesAmt}
                 session={session}
+                isModerator={false}
               />
             </li>
           );
@@ -88,6 +89,7 @@ const UserPostFeed: FC<PostFeedProps> = ({ initialPosts, user, session }) => {
               currentVote={currentVote}
               votesAmt={votesAmt}
               session={session}
+              isModerator={false}
             />
           );
         }

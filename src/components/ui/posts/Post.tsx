@@ -27,6 +27,7 @@ interface PostProps {
   votesAmt: number;
   currentVote?: PartialVote;
   session?: Session | null;
+  isModerator: boolean;
 }
 
 const Post: FC<PostProps> = ({
@@ -36,12 +37,14 @@ const Post: FC<PostProps> = ({
   votesAmt: votesAmt,
   currentVote,
   session,
+  isModerator,
 }) => {
   const postRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { loginToast } = useCustomToast();
   const [modal, setModal] = useState(false);
+
   const { mutate: deletePost, isLoading } = useMutation({
     mutationFn: async () => {
       const payload: PostDeletionRequest = {
@@ -131,7 +134,7 @@ const Post: FC<PostProps> = ({
           <MessageSquare className="h-4 w-4" />
           {commentAmt} comments
         </a>
-        {post.authorId === session?.user.id ? (
+        {post.authorId === session?.user.id || isModerator ? (
           <Button
             size="sm"
             variant="subtle"
