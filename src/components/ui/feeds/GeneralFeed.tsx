@@ -15,7 +15,7 @@ const GeneralFeed = async () => {
     },
     take: INFINITE_SCROLLING_PAGINATION_RESULTS,
   });
-  return <PostFeed initialPosts={posts} />;
+  return <PostFeed initialPosts={posts} isModerator={false} />;
 };
 
 export default GeneralFeed;
