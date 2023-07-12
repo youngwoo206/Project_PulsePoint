@@ -28,6 +28,7 @@ const Layout = async ({
     },
   });
 
+  //checks if user is subscribed
   const subscription = !session?.user
     ? undefined
     : await db.subscription.findFirst({
@@ -40,8 +41,22 @@ const Layout = async ({
           },
         },
       });
-
   const isSubscribed = !!subscription;
+
+  //checks if user is a moderator
+  const moderator = !session?.user
+    ? undefined
+    : await db.moderation.findFirst({
+        where: {
+          subreddit: {
+            name: slug,
+          },
+          user: {
+            id: session.user.id,
+          },
+        },
+      });
+  const isModerator = !!moderator;
 
   if (!subreddit) return notFound();
 
@@ -53,17 +68,17 @@ const Layout = async ({
     },
   });
 
-  const memberArr = await db.user.findMany({
-    include: {
-      Subscription: {
-        where: {
-          subreddit: {
-            name: slug,
-          },
-        },
-      },
-    },
-  });
+  // const memberArr = await db.user.findMany({
+  //   include: {
+  //     Subscription: {
+  //       where: {
+  //         subreddit: {
+  //           name: slug,
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
 
   return (
     <div className="sm:container max-w-7xl mx-auto h-full pt-12">
@@ -95,13 +110,23 @@ const Layout = async ({
                     <div className="text-gray-900">{memberCount}</div>
                   </dt>
                 </div>
-                {subreddit.creatorId === session?.user.id ? (
-                  <div className="flex justify-between gap-x-4 py-3">
-                    <p className="text-gray-500">
-                      You are the creator of this community
-                    </p>
-                  </div>
-                ) : null}
+                <div>
+                  {subreddit.creatorId === session?.user.id ? (
+                    <div className="flex justify-between gap-x-4 py-3">
+                      <p className="text-gray-500">
+                        You are the creator of this community
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {isModerator ? (
+                    <div className="flex justify-between gap-x-4 pb-3">
+                      <p className="text-gray-500">
+                        You are a community moderator
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
 
                 {subreddit.creatorId !== session?.user.id ? (
                   <SubscribeToggle

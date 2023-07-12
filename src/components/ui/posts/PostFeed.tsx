@@ -13,12 +13,14 @@ interface PostFeedProps {
   initialPosts: ExtendedPost[];
   subredditName?: string;
   session?: Session | null;
+  isModerator: boolean;
 }
 
 const PostFeed: FC<PostFeedProps> = ({
   initialPosts,
   subredditName,
   session,
+  isModerator,
 }) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
@@ -80,6 +82,7 @@ const PostFeed: FC<PostFeedProps> = ({
                 currentVote={currentVote}
                 votesAmt={votesAmt}
                 session={session}
+                isModerator={isModerator}
               />
             </li>
           );
@@ -93,6 +96,7 @@ const PostFeed: FC<PostFeedProps> = ({
               currentVote={currentVote}
               votesAmt={votesAmt}
               session={session}
+              isModerator={isModerator}
             />
           );
         }

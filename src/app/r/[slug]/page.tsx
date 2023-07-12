@@ -34,6 +34,20 @@ const Page = async ({ params }: PageProps) => {
     },
   });
 
+  const moderator = !session?.user
+    ? undefined
+    : await db.moderation.findFirst({
+        where: {
+          subreddit: {
+            name: slug,
+          },
+          user: {
+            id: session.user.id,
+          },
+        },
+      });
+  const isModerator = !!moderator;
+
   if (!subreddit) {
     return notFound();
   }
@@ -48,6 +62,7 @@ const Page = async ({ params }: PageProps) => {
         initialPosts={subreddit.posts}
         subredditName={subreddit.name}
         session={session}
+        isModerator={isModerator}
       />
     </>
   );
