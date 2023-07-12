@@ -62,7 +62,7 @@ const Page = async ({ params }: PageProps) => {
             />
           </Suspense>
           <div className="w-0 flex-1">
-            <div className="max-h-40 mt-1 text-xs text-gray-500">
+            <div className="mt-1 text-xs text-gray-500">
               <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
                 Posted by{" "}
                 <a
