@@ -1,8 +1,12 @@
 import { Button, buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
+import AddModerator from "@/components/ui/subreddit/AddModerator";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { AddModeratorPayload } from "@/lib/validators/subreddit";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { format } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -184,11 +188,7 @@ const Layout = async ({
                             {user.userName}
                           </a>
 
-                          {isModerator ? (
-                            <button className="border text-sm border-slate-500 px-2 my-1 bg-white rounded-md">
-                              + Mod
-                            </button>
-                          ) : null}
+                          {isModerator ? <AddModerator user={user} /> : null}
                         </div>
                       );
                     }
