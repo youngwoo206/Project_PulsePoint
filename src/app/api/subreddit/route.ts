@@ -39,6 +39,8 @@ export async function POST(req: Request) {
             data: {
                 userId: session.user.id,
                 subredditId: subreddit.id,
+                /*@ts-ignore */
+                userName: session.user.username
             }
         })
 
