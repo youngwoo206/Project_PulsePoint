@@ -1,10 +1,9 @@
-import { buttonVariants } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
-import { LucideTestTube2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -75,6 +74,18 @@ const Layout = async ({
         name: slug,
       },
     },
+    //not working atm
+    // include: {
+    //   user: {
+    //     select: {
+    //       Moderation: {
+    //         where: {
+    //           subredditId: subreddit.id,
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   });
 
   return (
@@ -152,9 +163,35 @@ const Layout = async ({
               </div>
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
                 <div>
+                  <div className="flex justify-between">
+                    <div>searchbar</div>
+                    <div className="border border-slate-500 px-2 rounded-md">
+                      recent
+                    </div>
+                  </div>
                   {/* @ts-ignore */}
                   {members.map((user) => {
-                    return <p key={user.userId}>{user.userName}</p>;
+                    if (user.userId != session?.user.id) {
+                      return (
+                        <div
+                          key={user.userId}
+                          className="rounded-md bg-lightGrey px-3 my-3 flex justify-between"
+                        >
+                          <a
+                            href={`/u/${user.userName}`}
+                            className="underline hover:text-zinc-500 ml-2 text-black my-auto"
+                          >
+                            {user.userName}
+                          </a>
+
+                          {isModerator ? (
+                            <button className="border text-sm border-slate-500 px-2 my-1 bg-white rounded-md">
+                              + Mod
+                            </button>
+                          ) : null}
+                        </div>
+                      );
+                    }
                   })}
                 </div>
               </dl>
