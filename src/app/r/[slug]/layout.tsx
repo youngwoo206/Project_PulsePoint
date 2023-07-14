@@ -4,6 +4,7 @@ import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
+import { LucideTestTube2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -68,17 +69,13 @@ const Layout = async ({
     },
   });
 
-  // const memberArr = await db.user.findMany({
-  //   include: {
-  //     Subscription: {
-  //       where: {
-  //         subreddit: {
-  //           name: slug,
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  const members = await db.subscription.findMany({
+    where: {
+      subreddit: {
+        name: slug,
+      },
+    },
+  });
 
   return (
     <div className="sm:container max-w-7xl mx-auto h-full pt-12">
@@ -148,19 +145,20 @@ const Layout = async ({
               </dl>
             </div>
             {/* see subreddit members */}
-            {/* <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last mt-9">
+            <div className="hidden md:block h-fit rounded-lg border border-gray-200 order-first md:order-last mt-9">
+              {/* <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last mt-9"> */}
               <div className="px-6 py-4">
                 <p className="font-semibold py-3">r/{subreddit.name} Members</p>
               </div>
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
-                <div> */}
-            {/* @ts-ignore */}
-            {/* {memberArr.map((user) => {
-                    return <p key={user.id}>{user.username}</p>;
+                <div>
+                  {/* @ts-ignore */}
+                  {members.map((user) => {
+                    return <p key={user.userId}>{user.userName}</p>;
                   })}
                 </div>
               </dl>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

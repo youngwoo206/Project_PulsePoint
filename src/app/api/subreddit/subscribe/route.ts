@@ -30,6 +30,7 @@ export async function POST(req: Request) {
             data: {
                 subredditId,
                 userId: session.user.id,
+                userName: session.user.username
             }
         })
 
