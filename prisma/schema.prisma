@@ -78,7 +78,7 @@ model Subreddit {
 model Subscription {
   user        User?     @relation(fields: [userId, userName], references: [id, username])
   userId      String
-  userName    String
+  userName    String?
   subreddit   Subreddit @relation(fields: [subredditId], references: [id])
   subredditId String
 
