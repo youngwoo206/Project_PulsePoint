@@ -76,7 +76,11 @@ const Page = () => {
             </p>
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                e.target.value = e.target.value.replaceAll(/[^a-z0-9_]/gi, "");
+                setInput(e.target.value);
+              }}
+              maxLength={21}
               className="pl-6"
             />
           </div>
