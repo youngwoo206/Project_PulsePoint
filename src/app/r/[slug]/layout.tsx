@@ -1,10 +1,14 @@
-import { buttonVariants } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
+import AddModerator from "@/components/ui/subreddit/AddModerator";
+import MemberSearchbar from "@/components/ui/subreddit/MemberSearchbar";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { AddModeratorPayload } from "@/lib/validators/subreddit";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { format } from "date-fns";
-import { LucideTestTube2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -75,6 +79,21 @@ const Layout = async ({
         name: slug,
       },
     },
+    include: {
+      user: {
+        include: {
+          Moderation: {
+            where: {
+              subredditId: subreddit.id,
+            },
+            select: {
+              subredditId: true,
+            },
+          },
+        },
+      },
+    },
+    take: 5,
   });
 
   return (
@@ -152,9 +171,35 @@ const Layout = async ({
               </div>
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
                 <div>
+                  <div className="flex justify-between">
+                    <MemberSearchbar subredditId={subreddit.id} />
+                    <div className="border border-slate-500 px-2 rounded-md">
+                      recent
+                    </div>
+                  </div>
                   {/* @ts-ignore */}
                   {members.map((user) => {
-                    return <p key={user.userId}>{user.userName}</p>;
+                    if (user.userId != session?.user.id) {
+                      return (
+                        <div
+                          key={user.userId}
+                          className="rounded-md bg-lightGrey px-3 my-3 flex justify-between"
+                        >
+                          <a
+                            href={`/u/${user.userName}`}
+                            className="underline hover:text-zinc-500 ml-2 text-black my-auto"
+                          >
+                            {/* {user.user?.Moderation.length ? "👑" : null} */}
+                            {user.userName}
+                          </a>
+                          {isModerator && !user.user?.Moderation.length ? (
+                            <AddModerator user={user} />
+                          ) : (
+                            "👑"
+                          )}
+                        </div>
+                      );
+                    }
                   })}
                 </div>
               </dl>
