@@ -42,8 +42,8 @@ export async function POST(req: Request) {
         //gives creator moderation privileges
         await db.moderation.create({
             data: {
-                userId: session.user.id,
-                subredditId: subreddit.id 
+                userId: userId,
+                subredditId: subredditId 
             }
         })
 

@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
+import { Loader2 } from "lucide-react";
+import { Button } from "../Button";
 
 interface UserProps {
   user: {
@@ -55,14 +57,15 @@ const AddModerator = ({ user }: UserProps) => {
   });
 
   return (
-    <>
-      <button
-        className="border text-sm border-slate-500 px-2 my-1 bg-white rounded-md hover:border-red-500"
-        onClick={() => addModerator()}
-      >
-        + Mod
-      </button>
-    </>
+    <Button
+      onClick={() => addModerator()}
+      isLoading={isLoading}
+      size="xs"
+      variant="outline"
+      className="h-5 my-auto w-12 flex justify-center"
+    >
+      {isLoading ? null : "+Mod"}
+    </Button>
   );
 };
 
