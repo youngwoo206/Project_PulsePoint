@@ -16,6 +16,18 @@ export async function GET(req: Request) {
           startsWith: q
         }
     },
+    include: {
+      user: true,
+      subreddit: {
+        include: {
+          Moderation: {
+            where: {
+              subredditId: sub
+            }
+          }
+        }
+      }
+    },
     take: 5
   })
 
