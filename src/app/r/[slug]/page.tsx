@@ -4,6 +4,8 @@ import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { notFound } from "next/navigation";
 import MiniCreatePost from "@/components/ui/subreddit/MiniCreatePost";
 import PostFeed from "@/components/ui/posts/PostFeed";
+import Tag from "@/components/ui/subreddit/Tag";
+import AddTag from "@/components/ui/subreddit/AddTag";
 
 interface PageProps {
   params: {
@@ -57,6 +59,11 @@ const Page = async ({ params }: PageProps) => {
       <h1 className="font-bold text-3xl md:text-4xl h-14">
         r/{subreddit.name}
       </h1>
+      <div className="flex gap-2">
+        <Tag name="funnyyyyy" />
+        <Tag name="fun" />
+        {isModerator ? <AddTag /> : null}
+      </div>
       <MiniCreatePost session={session} />
       <PostFeed
         initialPosts={subreddit.posts}

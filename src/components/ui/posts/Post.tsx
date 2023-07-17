@@ -112,17 +112,16 @@ const Post: FC<PostProps> = ({
             <h1 className="text-lg font-semibold py-2 leading-6 text-gray-900">
               {post.title}
             </h1>
+            <div
+              className="relative text-sm max-h-40 w-full overflow-clip"
+              ref={postRef}
+            >
+              <EditorOutput content={post.content} />
+              {postRef.current?.clientHeight === 160 ? (
+                <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
+              ) : null}
+            </div>
           </a>
-
-          <div
-            className="relative text-sm max-h-40 w-full overflow-clip"
-            ref={postRef}
-          >
-            <EditorOutput content={post.content} />
-            {postRef.current?.clientHeight === 160 ? (
-              <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
-            ) : null}
-          </div>
         </div>
       </div>
 
