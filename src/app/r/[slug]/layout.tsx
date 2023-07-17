@@ -78,18 +78,20 @@ const Layout = async ({
         name: slug,
       },
     },
-    //not working atm
-    // include: {
-    //   user: {
-    //     select: {
-    //       Moderation: {
-    //         where: {
-    //           subredditId: subreddit.id,
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
+    include: {
+      user: {
+        include: {
+          Moderation: {
+            where: {
+              subredditId: subreddit.id,
+            },
+            select: {
+              subredditId: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return (
@@ -185,10 +187,12 @@ const Layout = async ({
                             href={`/u/${user.userName}`}
                             className="underline hover:text-zinc-500 ml-2 text-black my-auto"
                           >
+                            {user.user?.Moderation.length ? "👑 " : null}
                             {user.userName}
                           </a>
-
-                          {isModerator ? <AddModerator user={user} /> : null}
+                          {isModerator && !user.user?.Moderation.length ? (
+                            <AddModerator user={user} />
+                          ) : null}
                         </div>
                       );
                     }
