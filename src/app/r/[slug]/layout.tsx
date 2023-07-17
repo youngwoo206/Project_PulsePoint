@@ -1,6 +1,7 @@
 import { Button, buttonVariants } from "@/components/ui/Button";
 import ToFeedButton from "@/components/ui/ToFeedButton";
 import AddModerator from "@/components/ui/subreddit/AddModerator";
+import MemberSearchbar from "@/components/ui/subreddit/MemberSearchbar";
 import SubscribeToggle from "@/components/ui/subreddit/SubscribeToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -92,6 +93,7 @@ const Layout = async ({
         },
       },
     },
+    take: 5,
   });
 
   return (
@@ -170,7 +172,7 @@ const Layout = async ({
               <dl className="divide-y divide-grey-100 px-6 py-4 text-sm leading-6 bg-white">
                 <div>
                   <div className="flex justify-between">
-                    <div>searchbar</div>
+                    <MemberSearchbar subredditId={subreddit.id} />
                     <div className="border border-slate-500 px-2 rounded-md">
                       recent
                     </div>
@@ -187,12 +189,14 @@ const Layout = async ({
                             href={`/u/${user.userName}`}
                             className="underline hover:text-zinc-500 ml-2 text-black my-auto"
                           >
-                            {user.user?.Moderation.length ? "👑 " : null}
+                            {/* {user.user?.Moderation.length ? "👑" : null} */}
                             {user.userName}
                           </a>
                           {isModerator && !user.user?.Moderation.length ? (
                             <AddModerator user={user} />
-                          ) : null}
+                          ) : (
+                            "👑"
+                          )}
                         </div>
                       );
                     }
