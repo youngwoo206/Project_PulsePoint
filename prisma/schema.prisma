@@ -66,6 +66,7 @@ model Subreddit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts     Post[]
+  tags      Tag[]
 
   creatorId   String?
   Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
@@ -73,6 +74,14 @@ model Subreddit {
   Moderation  Moderation[]
 
   @@index([name])
+}
+
+model Tag {
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
+  subredditId String
+  name        String
+
+  @@id([name])
 }
 
 model Subscription {
