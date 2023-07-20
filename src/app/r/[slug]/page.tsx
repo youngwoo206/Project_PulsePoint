@@ -50,18 +50,27 @@ const Page = async ({ params }: PageProps) => {
       });
   const isModerator = !!moderator;
 
+  const tags = await db.tag.findMany({
+    where: {
+      subredditId: subreddit?.id,
+    },
+  });
+
   if (!subreddit) {
     return notFound();
   }
 
   return (
-    <>
+    <div>
       <h1 className="font-bold text-3xl md:text-4xl h-14">
         r/{subreddit.name}
       </h1>
-      <div className="flex gap-2">
-        <Tag name="funnyyyyy" />
-        <Tag name="fun" />
+      <div className="flex justify-between">
+        <div className="flex gap-2">
+          {tags.map((tag) => {
+            return <Tag key={tag.name} name={tag.name} isModerator />;
+          })}
+        </div>
         {isModerator ? <AddTag /> : null}
       </div>
       <MiniCreatePost session={session} />
@@ -71,7 +80,7 @@ const Page = async ({ params }: PageProps) => {
         session={session}
         isModerator={isModerator}
       />
-    </>
+    </div>
   );
 };
 
